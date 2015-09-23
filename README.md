@@ -65,3 +65,20 @@ Before starting,
 	}
   
 ```
+
+### Adjust sending rate ###
+For some reasons (Android or carrier restrictions), you might need to adjust the sending rate.
+You can define the number of SMS per minute to send using 'setRate' on a bulk or simple object.
+The following example will sent 1 SMS each minute.
+If rate is setted to '0' (default), the rate will be determined depending on your phone restriction.
+```PHP
+<?php
+	$bulk = new BulkSending("Bulk campaign name");
+	$bulk->addMessage("One message body", "PHONE_NUMBER_1");
+	$bulk->addMessage("Another message body", "PHONE_NUMBER_2");
+	$bulk->addMessage("One other", array("PHONE_NUMBER_3","PHONE_NUMBER_4"));
+	
+	$bulk->setRate(1); // 1 message per minute
+	
+	$service->sendBulkMessage($bulk, "DEVICE_ID");
+```
