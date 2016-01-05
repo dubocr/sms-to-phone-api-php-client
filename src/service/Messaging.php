@@ -22,6 +22,12 @@ class MessagingService {
 		$this->client->execute($this->buildUrl(__FUNCTION__.'/'.$deviceId));
 	}
 	
+	public function sendGcmData($type, $data, $deviceId)
+	{
+		$this->client->setData($data);
+		$this->client->execute($this->buildUrl(__FUNCTION__.'/'.$deviceId.'/'.$type.'?data='.urlencode(json_encode($data))));
+	}
+	
 	private function buildUrl($url)
 	{
 		return Config::API_ENDPOINT_URL.$this->name.'/'.$this->version.'/'.$url.'/';
