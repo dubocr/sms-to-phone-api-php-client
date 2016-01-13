@@ -20,11 +20,14 @@ class RequestClient {
 	}
 	
 	public function execute($url) {
+		$json = json_encode($this->data);
 		$options = array(
 			'http' => array(
-				'header'  => "Content-Type: application/json\r\n"."Authorization: ".$this->accessToken."\r\n",
+				'header'  => "Content-Type: application/json\r\n".
+					"Content-Length: ".strlen($json)."\r\n".
+					"Authorization: ".$this->accessToken."\r\n",
 				'method'  => 'POST',
-				'content' => json_encode($this->data),
+				'content' => $json,
 				'ignore_errors' => true,
 			),
 		);
@@ -35,7 +38,7 @@ class RequestClient {
 		//var_dump($http_response_header);
 		if($data == null && strpos($http_response_header[0], '204') === false)
 		{
-			throw new Exception($http_response_header[0]);
+			throw new Exception($http_response_header[0].' - '.$url);
 		}
 		else
 		{
